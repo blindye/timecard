@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { 
   Box, 
   Typography, 
@@ -39,22 +39,20 @@ function Timer() {
   useEffect(() => {
     fetchUserTeam();
     checkExistingEntry();
-  }, [currentUser]);
+  }, [currentUser, fetchUserTeam, checkExistingEntry]);
 
-  const fetchUserTeam = async () => {
+  const fetchUserTeam = useCallback(async () => {
     try {
       const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
       if (userDoc.exists()) {
-        const team = userDoc.data().team;
-        setUserTeam(team);
-        setCurrentShift(getCurrentShift(team));
+        setUserTeam(userDoc.data().team);
       }
     } catch (error) {
-      console.error('Error fetching user settings:', error);
+      console.error('Error fetching user team:', error);
     }
-  };
+  }, [currentUser.uid]);
 
-  const checkExistingEntry = async () => {
+  const checkExistingEntry = useCallback(async () => {
     const now = new Date();
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -94,7 +92,7 @@ function Timer() {
     } catch (error) {
       console.error('Error checking existing entries:', error);
     }
-  };
+  }, [currentUser.uid, currentShift]);
 
   const calculateEarlyMinutes = (startTime, shiftStartTime) => {
     const [hours, minutes] = shiftStartTime.split(':').map(Number);

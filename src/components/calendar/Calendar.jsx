@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { 
   Box, 
   Paper, 
@@ -23,9 +23,9 @@ function Calendar() {
 
   useEffect(() => {
     fetchUserTeam();
-  }, [currentUser]);
+  }, [currentUser, fetchUserTeam]);
 
-  const fetchUserTeam = async () => {
+  const fetchUserTeam = useCallback(async () => {
     try {
       const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
       if (userDoc.exists()) {
@@ -36,7 +36,7 @@ function Calendar() {
       console.error('Error fetching user team:', error);
       setLoading(false);
     }
-  };
+  }, [currentUser.uid]);
 
   const generateYearlySchedule = () => {
     const year = new Date().getFullYear();

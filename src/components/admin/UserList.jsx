@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {
   Table,
   TableBody,
@@ -6,10 +6,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Paper,
-  IconButton,
-  Typography,
-  CircularProgress
+  Button
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { db } from '../../config/firebase';

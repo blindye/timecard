@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { 
   Box, 
   Paper, 
@@ -41,9 +41,9 @@ function Reports() {
 
   useEffect(() => {
     fetchReportData();
-  }, [currentUser]);
+  }, [currentUser, fetchReportData]);
 
-  const fetchReportData = async () => {
+  const fetchReportData = useCallback(async () => {
     try {
       const timeEntriesRef = collection(db, 'timeEntries');
       const q = query(timeEntriesRef, where('userId', '==', currentUser.uid));
@@ -122,7 +122,7 @@ function Reports() {
       console.error('Error fetching report data:', error);
       setLoading(false);
     }
-  };
+  }, [currentUser.uid]);
 
   const getWeekNumber = (date) => {
     const d = new Date(date);

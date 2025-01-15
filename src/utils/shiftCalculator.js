@@ -1,16 +1,10 @@
+import { useCallback } from 'react';
+
 const SHIFTS = {
   MORNING: { name: 'Morning', startTime: '06:00' },
   EVENING: { name: 'Evening', startTime: '14:00' },
   NIGHT: { name: 'Night', startTime: '22:00' },
   FREE: { name: 'Free', startTime: '-' }
-};
-
-const INITIAL_ROTATION = {
-  1: { // Week 1 of 2025
-    A: SHIFTS.MORNING,
-    B: SHIFTS.NIGHT,
-    C: SHIFTS.EVENING
-  }
 };
 
 function getWeekNumber(date) {
