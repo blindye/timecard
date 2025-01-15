@@ -1,8 +1,10 @@
 name: Deploy to GitHub Pages
 
 on:
+  workflow_dispatch:
   push:
     branches: [ testing ]
+    
 
 jobs:
   build-and-deploy:
