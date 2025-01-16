@@ -28,24 +28,15 @@ function Timer() {
   const [hasStartedWork, setHasStartedWork] = useState(false);
   const { currentUser } = useAuth();
 
-  // Update current time every second
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
-
-  useEffect(() => {
-    fetchUserTeam();
-    checkExistingEntry();
-  }, [currentUser, fetchUserTeam, checkExistingEntry]);
-
   const fetchUserTeam = useCallback(async () => {
     try {
       const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
       if (userDoc.exists()) {
-        setUserTeam(userDoc.data().team);
+        const userData = userDoc.data();
+        setUserTeam(userData.team);
+        // Set current shift based on user's team
+        const shift = getCurrentShift(userData.team);
+        setCurrentShift(shift);
       }
     } catch (error) {
       console.error('Error fetching user team:', error);
@@ -93,6 +84,19 @@ function Timer() {
       console.error('Error checking existing entries:', error);
     }
   }, [currentUser.uid, currentShift]);
+
+  // Update current time every second
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    fetchUserTeam();
+    checkExistingEntry();
+  }, [fetchUserTeam, checkExistingEntry]);
 
   const calculateEarlyMinutes = (startTime, shiftStartTime) => {
     const [hours, minutes] = shiftStartTime.split(':').map(Number);
