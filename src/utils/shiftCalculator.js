@@ -1,5 +1,3 @@
-import { SHIFTS, getShiftRotation, getCurrentShift } from './shiftCalculator';
-
 const SHIFTS = {
   MORNING: { name: 'Morning', startTime: '06:00' },
   EVENING: { name: 'Evening', startTime: '14:00' },
