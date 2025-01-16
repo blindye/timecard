@@ -21,10 +21,6 @@ function Calendar() {
   const [loading, setLoading] = useState(true);
   const { currentUser } = useAuth();
 
-  useEffect(() => {
-    fetchUserTeam();
-  }, [currentUser, fetchUserTeam]);
-
   const fetchUserTeam = useCallback(async () => {
     try {
       const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
@@ -37,6 +33,10 @@ function Calendar() {
       setLoading(false);
     }
   }, [currentUser.uid]);
+
+  useEffect(() => {
+    fetchUserTeam();
+  }, [currentUser, fetchUserTeam]);
 
   const generateYearlySchedule = () => {
     const year = new Date().getFullYear();

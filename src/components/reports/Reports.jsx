@@ -36,12 +36,8 @@ function Reports() {
   const [loading, setLoading] = useState(true);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [selectedEntry, setSelectedEntry] = useState(null);
-  const [viewMode, setViewMode] = useState('daily'); // 'daily' or 'weekly'
+  const [viewMode, setViewMode] = useState('daily');
   const { currentUser } = useAuth();
-
-  useEffect(() => {
-    fetchReportData();
-  }, [currentUser, fetchReportData]);
 
   const fetchReportData = useCallback(async () => {
     try {
@@ -123,6 +119,10 @@ function Reports() {
       setLoading(false);
     }
   }, [currentUser.uid]);
+
+  useEffect(() => {
+    fetchReportData();
+  }, [currentUser, fetchReportData]);
 
   const getWeekNumber = (date) => {
     const d = new Date(date);
